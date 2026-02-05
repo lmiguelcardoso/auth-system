@@ -35,6 +35,7 @@ export class UsersService {
       email: createUserDto.email,
       name: createUserDto.name,
       password: hashedPassword,
+      roleId: createUserDto.roleId,
     });
 
     return this.usersRepository.save(user);
@@ -71,6 +72,10 @@ export class UsersService {
 
     if (updateUserDto.password) {
       user.password = await this.passwordService.hash(updateUserDto.password);
+    }
+
+    if (updateUserDto.roleId !== undefined) {
+      user.roleId = updateUserDto.roleId;
     }
 
     return this.usersRepository.save(user);

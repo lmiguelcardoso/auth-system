@@ -4,17 +4,17 @@ import { promisify } from 'util';
 
 const scryptAsync = promisify(scrypt);
 
-const SALT_LENGTH = 32;
-const KEY_LENGTH = 64;
-
 @Injectable()
 export class PasswordService {
+  private readonly saltLength = 32;
+  private readonly keyLength = 64;
+
   async hash(password: string): Promise<string> {
-    const salt = randomBytes(SALT_LENGTH).toString('hex');
+    const salt = randomBytes(this.saltLength).toString('hex');
     const derivedKey = (await scryptAsync(
       password,
       salt,
-      KEY_LENGTH,
+      this.keyLength,
     )) as Buffer;
     return `${salt}:${derivedKey.toString('hex')}`;
   }
@@ -24,7 +24,7 @@ export class PasswordService {
     const derivedKey = (await scryptAsync(
       password,
       salt,
-      KEY_LENGTH,
+      this.keyLength,
     )) as Buffer;
     const keyBuffer = Buffer.from(key, 'hex');
     return timingSafeEqual(derivedKey, keyBuffer);

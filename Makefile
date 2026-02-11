@@ -1,4 +1,4 @@
-.PHONY: help install up down restart logs db-shell migrate seed dev build lint test clean
+.PHONY: help install up down restart logs db-shell migrate seed setup dev build lint test clean
 
 # Default target
 help:
@@ -11,6 +11,7 @@ help:
 	@echo "  make db-shell   - Open PostgreSQL shell"
 	@echo "  make migrate    - Run database migrations"
 	@echo "  make seed       - Seed database with initial data"
+	@echo "  make setup      - Run migrations and seed (init database)"
 	@echo "  make dev        - Run app in development mode"
 	@echo "  make build      - Build the application"
 	@echo "  make lint       - Run linter and fix issues"
@@ -42,6 +43,10 @@ migrate:
 	npm run migration:run
 
 seed:
+	npm run seed
+
+setup:
+	npm run migration:run
 	npm run seed
 
 # Development commands
